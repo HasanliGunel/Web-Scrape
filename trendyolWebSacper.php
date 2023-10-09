@@ -12,7 +12,7 @@ $say = count($link[2]);
         <th>№</th>
         <th>Description</th>
         <th>Price</th>
-        <th>Sale</th>
+        <!-- <th>Sale</th> -->
         <th>İmage</th>
     </tr>
     <?php
@@ -32,22 +32,17 @@ $say = count($link[2]);
 
             preg_match_all('@<div class="product-price-container">(.*?)(.*?)(.*?)</div>@si', $nData, $price);
             $prStr = implode(" ", $price[0]);
-            // if($price==" "){
-            //     preg_match_all('@<div class="featured-prices">(.*?)(.*?)</div>@si', $nData, $price);
+            $pri = strip_tags($prStr);
 
-            // }
+            if (strlen($pri) == 0) {
+                preg_match_all('@<div class="featured-prices">(.*?)(.*?)</div>@si', $nData, $price);
+                $prStr = implode(" ", $price[0]);
+                $pri = strip_tags($prStr);
+            }
             ?>
             <td><?php echo $prStr;
                 // print_r($price[0]);
                 ?></td>
-            <?php
-            preg_match_all('@<div class="featured-prices">(.*?)(.*?)</div>@si', $nData, $prSale);
-            $saStr = implode(" ", $prSale[0]);
-            ?>
-             <td>
-                <?php echo $saStr; 
-                // print_r($prSale[0]);?>
-            </td> 
             <?php $path = "/product/media/images/";
             preg_match_all('/src="(.*?)"/', $nData, $image);
             foreach ($image[1] as $items) {
